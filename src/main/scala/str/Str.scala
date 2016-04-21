@@ -7,7 +7,6 @@ final case class Str(private val value: String) extends AnyVal {
 
   @inline final def  isEmpty                            : Boolean =  value.isEmpty
   @inline final def nonEmpty                            : Boolean = !value.isEmpty
-  @inline final def isDefined                           : Boolean = !value.isEmpty
   @inline final def  contains(  s: String              ): Boolean = nonEmpty && value == s
   @inline final def    exists(  p: String  => Boolean  ): Boolean = nonEmpty && p(value)
   @inline final def    forall(  p: String  => Boolean  ): Boolean =  isEmpty || p(value)
