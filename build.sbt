@@ -1,3 +1,5 @@
+import SbtMisc._
+
 lazy val str = project in file(".")
 
 organization := "com.dwijnand"
@@ -12,8 +14,8 @@ scalaVersion := "2.11.8"
        maxErrors := 15
 triggeredMessage := Watched.clearWhenTriggered
 
-scalacOptions ++= Seq("-encoding", "utf8")
-scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked", "-Xlint")
+scalacOptions ++= "-encoding utf8"
+scalacOptions ++= "-deprecation -feature -unchecked -Xlint"
 scalacOptions  += "-language:higherKinds"
 scalacOptions  += "-language:implicitConversions"
 scalacOptions  += "-language:postfixOps"
