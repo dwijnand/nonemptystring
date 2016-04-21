@@ -1,6 +1,17 @@
 import sbt._, Keys._
 
 object SbtMisc {
+  val noDocs    = Def.settings(sources in (Compile, doc) := Nil, publishArtifact in (Compile, packageDoc) := false)
+  val noPackage = Def.settings(Keys.`package` := file(""), packageBin := file(""), packagedArtifacts := Map())
+  val noPublish = Def.settings(
+    publishArtifact := false,
+    publish         := {},
+    publishLocal    := {},
+    publishM2       := {},
+    publishTo       := Some(Resolver.file("devnull", file("/dev/null")))
+  )
+  val noArtifacts = Def.settings(noPackage, noPublish)
+
   // Remove with sbt 0.13.12+
   implicit def appendOption[T]: Append.Sequence[Seq[T], Option[T], Option[T]] =
     new Append.Sequence[Seq[T], Option[T], Option[T]] {

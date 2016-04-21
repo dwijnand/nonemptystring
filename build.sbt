@@ -57,16 +57,5 @@ pomExtra := pomExtra.value ++ {
     </scm>
 }
 
-val noDocs    = Def.settings(sources in (Compile, doc) := Nil, publishArtifact in (Compile, packageDoc) := false)
-val noPackage = Def.settings(Keys.`package` := file(""), packageBin := file(""), packagedArtifacts := Map())
-val noPublish = Def.settings(
-  publishArtifact := false,
-  publish         := {},
-  publishLocal    := {},
-  publishM2       := {},
-  publishTo       := Some(Resolver.file("devnull", file("/dev/null")))
-)
-val noArtifacts = Def.settings(noPackage, noPublish)
-
 watchSources ++= (baseDirectory.value * "*.sbt").get
 watchSources ++= (baseDirectory.value / "project" * "*.scala").get
