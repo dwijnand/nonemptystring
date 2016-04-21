@@ -1,6 +1,7 @@
 package str
 
-import scala.{ PartialFunction => ?=> }
+import java.lang.String
+import scala.{ AnyVal, Boolean, inline, PartialFunction => ?=>, Unit }
 
 final case class Str(private val value: String) extends AnyVal {
   import Str.empty
