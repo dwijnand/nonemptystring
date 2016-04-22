@@ -1,6 +1,11 @@
 import sbt._
 import sbt.Keys._
 
+import scala.language.implicitConversions
+
+import org.scalajs.sbtplugin.cross.CrossProject
+import sbt.internals.{ DslConfigs, DslDisablePlugins, DslEnablePlugins, DslEntry, ProjectSettings }
+
 object SbtMisc {
   val noDocs    = Def.settings(sources in (Compile, doc) := Nil, publishArtifact in (Compile, packageDoc) := false)
   val noPackage = Def.settings(Keys.`package` := file(""), packageBin := file(""), packagedArtifacts := Map())
@@ -40,5 +45,20 @@ object SbtMisc {
 
   implicit def appendWords: Append.Values[Seq[String], String] = new Append.Values[Seq[String], String] {
     def appendValues(a: Seq[String], b: String): Seq[String] = a ++ (b split "\\s+" filterNot (_ == ""))
+  }
+
+  final case class ProjectMod(simple: Project => Project, cross: CrossProject => CrossProject)
+
+  implicit def settingsDefinitionToProjectMod(sd: SettingsDefinition): ProjectMod =
+    ProjectMod(_ settings (sd.settings: _*), _ settings (sd.settings: _*))
+
+  // Manually chain the implicit conversion
+  implicit def settingsToProjectMod(ss: Seq[Setting[_]]): ProjectMod = settingsDefinitionToProjectMod(ss)
+
+  implicit def dslEntryToProjectMod(dslEntry: DslEntry): ProjectMod = dslEntry match {
+    case ProjectSettings(ss)        => ProjectMod(_ settings       (ss: _*),      _ settings       (ss: _*)     )
+    case DslEnablePlugins(plugins)  => ProjectMod(_ enablePlugins  (plugins: _*), _ enablePlugins  (plugins: _*))
+    case DslDisablePlugins(plugins) => ProjectMod(_ disablePlugins (plugins: _*), _ disablePlugins (plugins: _*))
+    case DslConfigs(configs)        => ProjectMod(_ configs        (configs: _*), _ configs        (configs: _*))
   }
 }
