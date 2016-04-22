@@ -3,10 +3,11 @@ package str
 import java.lang.String
 import scala.{ AnyVal, Boolean, inline, PartialFunction => ?=>, Unit }
 
-final case class Str(private val value: String) extends AnyVal {
+final case class Str(unsafeGet: String) extends AnyVal {
   import Str.empty
 
-  @inline final def unsafeGet: String = value
+  @inline private final def value: String = unsafeGet
+
   @inline final def isEmpty: Boolean  = value.isEmpty
   @inline final def nonEmpty: Boolean = !value.isEmpty
 

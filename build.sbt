@@ -9,7 +9,8 @@ organization := "com.dwijnand"
  description := "a micro-library to deal with non-empty string"
     homepage := Some(url("https://github.com/dwijnand/str"))
 
-scalaVersion := "2.11.8"
+      scalaVersion := "2.11.8"
+crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.0-M4")
 
        maxErrors := 15
 triggeredMessage := Watched.clearWhenTriggered
@@ -20,13 +21,13 @@ scalacOptions  += "-language:higherKinds"
 scalacOptions  += "-language:implicitConversions"
 scalacOptions  += "-language:postfixOps"
 scalacOptions  += "-Xfuture"
-scalacOptions  += "-Yinline-warnings"
+scalacOptions  += "-Yinline-warnings".for212Plus("-Yopt-warnings:_").value
 scalacOptions  += "-Yno-adapted-args"
 scalacOptions ++= "-Yno-predef -Yno-imports"
 scalacOptions  += "-Ywarn-dead-code"
 scalacOptions  += "-Ywarn-numeric-widen"
-scalacOptions  += "-Ywarn-unused"
-scalacOptions  += "-Ywarn-unused-import"
+scalacOptions  += "-Ywarn-unused".if211Plus.value
+scalacOptions  += "-Ywarn-unused-import".if211Plus.value
 scalacOptions  += "-Ywarn-value-discard"
 
 scalacOptions in (Compile, console) -= "-Ywarn-unused-import"
