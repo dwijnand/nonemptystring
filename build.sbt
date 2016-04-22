@@ -1,16 +1,23 @@
 import SbtMisc._
+import org.scalajs.sbtplugin.cross.CrossProject
 
-lazy val str = project in file(".")
+lazy val strRoot  = project in file(".") aggregate (str, strJs)
+lazy val str      = strCross.jvm
+lazy val strJs    = strCross.js
+lazy val strCross = CrossProject("str", "strJs", file("."), CrossType.Pure)
 
 organization := "com.dwijnand"
      version := "1.0.0-SNAPSHOT"
     licenses := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0"))
    startYear := Some(2016)
- description := "a micro-library to deal with non-empty string"
+ description := "a micro-library to deal with empty strings"
     homepage := Some(url("https://github.com/dwijnand/str"))
 
       scalaVersion := "2.11.8"
 crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.0-M4")
+
+enablePlugins(ScalaJSPlugin)
+scalaJSUseRhino in Global := false
 
        maxErrors := 15
 triggeredMessage := Watched.clearWhenTriggered
