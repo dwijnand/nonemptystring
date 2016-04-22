@@ -28,8 +28,8 @@ trait ScalaCheckBundle extends Bundle {
 
   def pp(r: Result) = Pretty.pretty(r, Pretty.Params(0))
   def runOne(p: NamedProp): Boolean = p.check match {
-    case x if x.passed => sideEffect(true, println("+ %s  %s".format(pass, p.label)))
-    case r             => sideEffect(false, println("- %s  %s\nFalsified after %s passed tests\n%s".format(p.label, fail, r.succeeded, pp(r))))
+    case x if x.passed => sideEffect(true,  println("+ %s  %s".format(pass, p.label)))
+    case r             => sideEffect(false, println("- %s  %s\nFalsified after %s passed tests\n%s".format(fail, p.label, r.succeeded, pp(r))))
   }
 
   def run(): Boolean = {
