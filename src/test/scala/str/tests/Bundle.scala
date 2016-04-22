@@ -1,7 +1,6 @@
 package str.tests
 
 import scala.Console.{ println => _, _ }
-import scala.collection.immutable
 
 trait Bundle {
   def bundle: String
@@ -15,13 +14,13 @@ final class NamedProp(val label: String, p: Prop) {
   def check: Test.Result = Test.check(p)(identity)
 }
 object NamedProp {
-  def apply(label: String, p: Prop): NamedProp                               = new NamedProp(label, p)
-  implicit def liftSeqPair(x: String -> immutable.Iterable[Prop]): NamedProp = NamedProp(x._1, x._2 reduceLeft (_ && _))
-  implicit def liftPair(x: String -> Prop): NamedProp                        = NamedProp(x._1, x._2)
+  def apply(label: String, p: Prop): NamedProp                     = new NamedProp(label, p)
+  implicit def liftSeqPair(x: String -> Iterable[Prop]): NamedProp = NamedProp(x._1, x._2 reduceLeft (_ && _))
+  implicit def liftPair(x: String -> Prop): NamedProp              = NamedProp(x._1, x._2)
 }
 
 trait ScalaCheckBundle extends Bundle {
-  def props: immutable.Seq[NamedProp]
+  def props: Seq[NamedProp]
 
   def pass = PassGreen
   def fail = FailRed

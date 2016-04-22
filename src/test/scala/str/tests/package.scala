@@ -7,13 +7,18 @@ package object tests {
   val PassGreen = GREEN + "\u2713" + RESET // check mark
   val FailRed   = RED + "\u2717" + RESET   // cross mark
 
-  type ->[+A, +B] = scala.Product2[A, B]
-  type Any        = scala.Any
-  type AnyVal     = scala.AnyVal
-  type Boolean    = scala.Boolean
-  type inline     = scala.inline
-  type String     = java.lang.String
-  type Unit       = scala.Unit
+  type ->[+A, +B]   = scala.Product2[A, B]
+  type Any          = scala.Any
+  type AnyVal       = scala.AnyVal
+  type Boolean      = scala.Boolean
+  type inline       = scala.inline
+  type Iterable[+A] = scala.collection.immutable.Iterable[A]
+  type Seq[+A]      = scala.collection.immutable.Seq[A]
+  type String       = java.lang.String
+  type Unit         = scala.Unit
+
+  val Iterable = scala.collection.immutable.Seq
+  val Seq      = scala.collection.immutable.Seq
 
   private def stdout                  = scala.Console.out
   private def echoOut(msg: Any): Unit = stdout println msg
