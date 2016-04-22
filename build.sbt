@@ -17,7 +17,6 @@ organization := "com.dwijnand"
       scalaVersion := "2.11.8"
 crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.0-M4")
 
-enablePlugins(ScalaJSPlugin)
 scalaJSUseRhino in Global := false
 
        maxErrors := 15
@@ -51,13 +50,13 @@ cancelable in Global := true
 noDocs
 
 pomExtra := pomExtra.value ++ {
-    <developers>
-        <developer>
-            <id>dwijnand</id>
-            <name>Dale Wijnand</name>
-            <url>https://dwijnand.com</url>
-        </developer>
-    </developers>
+  <developers>
+    <developer>
+      <id>dwijnand</id>
+      <name>Dale Wijnand</name>
+      <url>https://dwijnand.com</url>
+    </developer>
+  </developers>
 }
 
 watchSources ++= (baseDirectory.value * "*.sbt").get

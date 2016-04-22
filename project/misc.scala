@@ -1,6 +1,5 @@
-import sbt._, Keys._
-
-import scala.{ PartialFunction => ?=> }
+import sbt._
+import sbt.Keys._
 
 object SbtMisc {
   val noDocs    = Def.settings(sources in (Compile, doc) := Nil, publishArtifact in (Compile, packageDoc) := false)
