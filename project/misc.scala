@@ -6,6 +6,8 @@ import scala.language.implicitConversions
 import org.scalajs.sbtplugin.cross.CrossProject
 import sbt.internals.{ DslConfigs, DslDisablePlugins, DslEnablePlugins, DslEntry, ProjectSettings }
 
+import scala.collection.immutable
+
 object SbtMisc {
   val noDocs    = Def.settings(sources in (Compile, doc) := Nil, publishArtifact in (Compile, packageDoc) := false)
   val noPackage = Def.settings(Keys.`package` := file(""), packageBin := file(""), packagedArtifacts := Map())
@@ -43,8 +45,14 @@ object SbtMisc {
       def removeValues(a: Seq[T], b: Option[T]): Seq[T] = b.fold(a)(a filterNot _.==)
     }
 
+  def wordSeq(s: String): immutable.Seq[String] = (s split "\\s+" filterNot (_ == "")).to[immutable.Seq]
+
   implicit def appendWords: Append.Values[Seq[String], String] = new Append.Values[Seq[String], String] {
-    def appendValues(a: Seq[String], b: String): Seq[String] = a ++ (b split "\\s+" filterNot (_ == ""))
+    def appendValues(a: Seq[String], b: String): Seq[String] = a ++ wordSeq(b)
+  }
+
+  implicit def removeWords: Remove.Values[Seq[String], String] = new Remove.Values[Seq[String], String] {
+    def removeValues(a: Seq[String], b: String): Seq[String] = a filterNot wordSeq(b).contains
   }
 
   final case class ProjectMod(simple: Project => Project, cross: CrossProject => CrossProject)

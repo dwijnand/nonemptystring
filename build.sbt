@@ -38,8 +38,12 @@ lazy val buildSetup: Seq[ProjectMod] = Seq(
   scalacOptions  += "-Ywarn-unused-import".if211Plus.value,
   scalacOptions  += "-Ywarn-value-discard",
 
-  scalacOptions in (Compile, console) -= "-Ywarn-unused-import",
-  scalacOptions in (Test,    console) -= "-Ywarn-unused-import",
+  scalacOptions in (Compile, console)  -= "-Ywarn-unused-import",
+  scalacOptions in (Test,    console)  -= "-Ywarn-unused-import",
+  scalacOptions in (Compile, console) --= "-Yno-predef -Yno-imports",
+  scalacOptions in (Test,    console) --= "-Yno-predef -Yno-imports",
+
+  initialCommands in console += "\nimport str._",
 
   libraryDependencies += "org.scalacheck" %%% "scalacheck" % "1.13.1" % "test",
   ProjectMod(
