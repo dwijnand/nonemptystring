@@ -41,9 +41,17 @@ lazy val buildSetup: Seq[ProjectMod] = Seq(
   scalacOptions in (Compile, console) -= "-Ywarn-unused-import",
   scalacOptions in (Test,    console) -= "-Ywarn-unused-import",
 
+  libraryDependencies += "org.scalacheck" %%% "scalacheck" % "1.13.1" % "test",
+  ProjectMod(
+    _    settings (libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"),
+    _ jvmSettings (libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test")
+      jsConfigure (_ enablePlugins ScalaJSJUnitPlugin)
+  ),
+
                fork in Test := false,
         logBuffered in Test := false,
   parallelExecution in Test := true,
+                testOptions += Tests.Argument(TestFrameworks.JUnit, "-s"),
 
            fork in run := true,
   cancelable in Global := true,
