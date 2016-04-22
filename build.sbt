@@ -69,5 +69,8 @@ lazy val buildSetup: Seq[ProjectMod] = Seq(
   }
 )
 
+// Force the root project to not share sources with the cross project, but still have base = file(".")
+baseDirectory := file("./project/root")
+
 watchSources ++= (baseDirectory.value * "*.sbt").get
 watchSources ++= (baseDirectory.value / "project" * "*.scala").get
