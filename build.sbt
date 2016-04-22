@@ -11,7 +11,8 @@ organization := "com.dwijnand"
     licenses := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0"))
    startYear := Some(2016)
  description := "a micro-library to deal with empty strings"
-    homepage := Some(url("https://github.com/dwijnand/str"))
+     scmInfo := Some(ScmInfo(url("https://github.com/dwijnand/str"), "scm:git:git@github.com:dwijnand/str.git"))
+    homepage := scmInfo.value map (_.browseUrl)
 
       scalaVersion := "2.11.8"
 crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.0-M4")
@@ -54,15 +55,9 @@ pomExtra := pomExtra.value ++ {
         <developer>
             <id>dwijnand</id>
             <name>Dale Wijnand</name>
-            <email>dale wijnand gmail com</email>
-            <url>dwijnand.com</url>
+            <url>https://dwijnand.com</url>
         </developer>
     </developers>
-    <scm>
-        <connection>scm:git:github.com/dwijnand/str.git</connection>
-        <developerConnection>scm:git:git@github.com:dwijnand/str.git</developerConnection>
-        <url>https://github.com/dwijnand/str</url>
-    </scm>
 }
 
 watchSources ++= (baseDirectory.value * "*.sbt").get
