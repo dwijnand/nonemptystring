@@ -1,7 +1,7 @@
 package str
 
 import java.lang.String
-import scala.{ AnyVal, Boolean, IllegalArgumentException, inline, throws, Unit }
+import scala.{ AnyVal, Boolean, IllegalArgumentException, inline, None, Option, Some, throws, Unit }
 
 final class NonEmptyString private (val value: String) extends AnyVal {
   @inline final type This = NonEmptyString
