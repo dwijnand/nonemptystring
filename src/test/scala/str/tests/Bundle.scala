@@ -1,4 +1,5 @@
-package str.tests
+package str
+package tests
 
 import scala.Console.{ println => _, _ }
 
@@ -15,7 +16,7 @@ final class NamedProp(val label: String, p: Prop) {
 }
 object NamedProp {
   def apply(label: String, p: Prop): NamedProp                     = new NamedProp(label, p)
-  implicit def liftSeqPair(x: String -> Iterable[Prop]): NamedProp = NamedProp(x._1, x._2 reduceLeft (_ && _))
+  implicit def liftSeqPair(x: String -> Iterable[Prop]): NamedProp = NamedProp(x._1, if (x._2.isEmpty) Prop.undecided else x._2 reduceLeft (_ && _))
   implicit def liftPair(x: String -> Prop): NamedProp              = NamedProp(x._1, x._2)
 }
 
