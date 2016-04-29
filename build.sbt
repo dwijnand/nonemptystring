@@ -54,7 +54,7 @@ lazy val buildSetup: Seq[ProjectMod] = Seq(
 
                fork in Test := false,
         logBuffered in Test := false,
-  parallelExecution in Test := true,
+  parallelExecution in Test := false, // so printlns don't intertwine
                 testOptions += Tests.Argument(TestFrameworks.JUnit, "-s"),
 
            fork in run := true,
