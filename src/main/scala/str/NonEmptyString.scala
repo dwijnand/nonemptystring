@@ -1,31 +1,34 @@
 package str
 
 import java.lang.String
-import scala.{ AnyVal, Boolean, IllegalArgumentException, inline, None, Option, Some, throws, Unit }
+import scala.{ AnyVal, IllegalArgumentException, inline, None, Option, StringContext, Some, throws }
+import scala.reflect.macros.blackbox
 
 final class NonEmptyString private (val value: String) extends AnyVal {
-  @inline final type This = NonEmptyString
-
-  @inline final def contains(s: String): Boolean          = value == s
-  @inline final def exists(p: String => Boolean): Boolean = p(value)
-  @inline final def forall(p: String => Boolean): Boolean = p(value)
-  @inline final def flatMap(f: String => This): This      = f(value)
-  @inline final def to[A](f: String => A): A              = f(value)
-  @inline final def foreach(f: String => Unit): Unit      = f(value)
-
-  @throws[IllegalArgumentException]
-  @inline final def unsafeMap(f: String => String): This = NonEmptyString unsafeFromString f(value)
-
-  @inline override final def toString = value
+  @inline override def toString = value
 }
 
-object NonEmptyString { // extends (String => NonEmptyString) {
-  // TODO: Make a macro
-//  def apply(s: String): NonEmptyString = if (s.isEmpty) ??? else new NonEmptyString(s)
+object NonEmptyString {
+  def apply(s: String): NonEmptyString           = macro NonEmptyStringMacros.applyImpl
+  def unapply(x: NonEmptyString): Option[String] = Some(x.value)
 
   @throws[IllegalArgumentException]
   def unsafeFromString(s: String): NonEmptyString =
     if (s.isEmpty) throw new IllegalArgumentException else new NonEmptyString(s)
 
   def fromString(s: String): Option[NonEmptyString] = if (s.isEmpty) None else Some(new NonEmptyString(s))
+}
+
+class NonEmptyStringMacros(val c: blackbox.Context) {
+  import c.universe._
+  def applyImpl(s: Tree): Tree = s match {
+    case Literal(Constant(s: String)) =>
+      if (s.isEmpty)
+        abort("Cannot create a NonEmptyString with the empty string")
+      else
+        q"""_root_.str.NonEmptyString.unsafeFromString($s)"""
+    case t => abort("Can only create an NonEmptyString with a constant string")
+  }
+
+  def abort(msg: String) = c.abort(c.enclosingPosition, msg)
 }

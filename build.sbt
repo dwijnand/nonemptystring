@@ -25,6 +25,7 @@ lazy val buildSetup: Seq[ProjectMod] = Seq(
 
   scalacOptions ++= "-encoding utf8",
   scalacOptions ++= "-deprecation -feature -unchecked -Xlint",
+  scalacOptions  += "-language:experimental.macros",
   scalacOptions  += "-language:higherKinds",
   scalacOptions  += "-language:implicitConversions",
   scalacOptions  += "-language:postfixOps",
@@ -45,7 +46,8 @@ lazy val buildSetup: Seq[ProjectMod] = Seq(
 
   initialCommands in console += "\nimport str._",
 
-  libraryDependencies += "org.scalacheck" %%% "scalacheck" % "1.13.1" % "test",
+  libraryDependencies += "org.scala-lang"   % "scala-reflect" % scalaVersion.value,
+  libraryDependencies += "org.scalacheck" %%% "scalacheck"    % "1.13.1" % "test",
   ProjectMod(
     _    settings (libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"),
     _ jvmSettings (libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test")
