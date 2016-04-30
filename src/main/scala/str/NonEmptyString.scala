@@ -17,6 +17,8 @@ object NonEmptyString {
     if (s.isEmpty) throw new IllegalArgumentException else new NonEmptyString(s)
 
   def fromString(s: String): Option[NonEmptyString] = if (s.isEmpty) None else Some(new NonEmptyString(s))
+
+  implicit def unlift(x: NonEmptyString): String = x.value
 }
 
 object NonEmptyStringMacros {

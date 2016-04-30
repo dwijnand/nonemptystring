@@ -23,6 +23,7 @@ class NonEmptyStringSpec extends ScalaCheckBundle {
       Prop(NonEmptyString.fromString("abc") == Some(NonEmptyString("abc"))),
       Prop { val s = "abc"; NonEmptyString.fromString(s) == Some(NonEmptyString("abc")) },
       Prop(NonEmptyString.fromString("") == None)
-    )
+    ),
+    "unlift" -> Prop((NonEmptyString("abc"): String) == "abc")
   )
 }
