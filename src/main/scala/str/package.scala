@@ -1,5 +1,7 @@
-import scala.StringContext
+import scala.{ Any, AnyVal, StringContext }
 
 package object str {
-  implicit def nonEmptyStringContext(sc: StringContext): NonEmptyStringContext = NonEmptyStringContext(sc)
+  final implicit class NonEmptyStringContext(val _sc: StringContext) extends AnyVal {
+    def nes[A >: Any](args: A*): NonEmptyString = macro NonEmptyStringMacros.nesImpl
+  }
 }

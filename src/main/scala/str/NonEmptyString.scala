@@ -39,10 +39,6 @@ object NonEmptyString {
   implicit def unlift(x: NonEmptyString): String = x.value
 }
 
-final case class NonEmptyStringContext(_sc: StringContext) extends AnyVal {
-  def nes[A >: Any](args: A*): NonEmptyString = macro NonEmptyStringMacros.nesImpl
-}
-
 object NonEmptyStringMacros {
   def applyImpl(c: blackbox.Context)(s: c.Expr[String]): c.Expr[NonEmptyString] = {
     import c.universe._
@@ -92,7 +88,7 @@ object illTyped {
 
     val Literal(Constant(errorStr: String)) = error.tree
     val errorPattern = Pattern.compile(errorStr, Pattern.CASE_INSENSITIVE | Pattern.DOTALL)
-    val errorMessage = s"Expected error matching: $errorStr"
+    val errorMessage = "Expected error matching: " + errorStr
 
     val Literal(Constant(codeStr: String)) = code.tree
     try {
