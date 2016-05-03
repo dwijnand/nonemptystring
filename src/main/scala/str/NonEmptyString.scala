@@ -14,7 +14,7 @@ object NonEmptyString {
 
   @throws[IllegalArgumentException]
   def unsafeFromString(s: String): NonEmptyString =
-    if (s.isEmpty) throw new IllegalArgumentException else new NonEmptyString(s)
+    if (s.isEmpty) throw new IllegalArgumentException("empty string") else new NonEmptyString(s)
 
   def fromString(s: String): Option[NonEmptyString] = if (s.isEmpty) None else Some(new NonEmptyString(s))
 
