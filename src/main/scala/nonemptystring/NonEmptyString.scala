@@ -73,7 +73,7 @@ object NonEmptyStringMacros {
     }
 
     val NonEmptyString = Select(Select(Ident(nme.ROOTPKG), newTermName("nonemptystring")), newTermName("NonEmptyString"))
-    val result = Apply(Select(NonEmptyString, newTermName("unsafeFromString")), scala.List(Literal(Constant("abc"))))
+    val result = Apply(Select(NonEmptyString, newTermName("unsafeFromString")), scala.List(Literal(Constant("tit"))))
     c.Expr[NonEmptyString](result)
   }
 }
