@@ -3,16 +3,17 @@ package tests
 
 import scala.{ IllegalArgumentException, Some, StringContext, Throwable }
 import scala.util.control.NonFatal
+import shapeless.test.illTyped
 
 class NonEmptyStringSpec extends ScalaCheckBundle {
   def bundle = "NonEmptyString"
   def props = Seq(
     "apply" -> Seq(
       Prop(NonEmptyString("abc").value == "abc"),
-      Prop(illTyped("""NonEmptyString("")""")("Cannot create a NonEmptyString with the empty string")),
-      Prop(illTyped("""{ val s = "abc"; NonEmptyString(s).value == "abc" }""")
-        ("Can only create an NonEmptyString with a constant string")
-      )
+      Prop { illTyped("""NonEmptyString("")""", "Cannot create a NonEmptyString with the empty string"); true },
+      Prop { illTyped("""{ val s = "abc"; NonEmptyString(s).value == "abc" }""",
+        "Can only create an NonEmptyString with a constant string"
+      ); true }
     ),
     "unapply" -> Seq(
       Prop(NonEmptyString.unapply(NonEmptyString("abc")) == Some("abc")),
@@ -31,10 +32,10 @@ class NonEmptyStringSpec extends ScalaCheckBundle {
     "nes-interpolator" -> Seq(
       Prop(nes"abc" == NonEmptyString("abc")),
       Prop { val a = "abc"; use(a); nes"[abc = $a]" == NonEmptyString("[abc = abc]") },
-      Prop(illTyped(""" nes"" """)("Cannot create a NonEmptyString with the empty string")),
-      Prop(illTyped("""{ val a = ""; nes"$a" }""")
-        ("Cannot create a NonEmptyString with possibly an empty interpolated string")
-      )
+      Prop { illTyped(""" nes"" """, "Cannot create a NonEmptyString with the empty string"); true },
+      Prop { illTyped("""{ val a = ""; nes"$a" }""",
+        "Cannot create a NonEmptyString with possibly an empty interpolated string"
+      ); true }
     )
   )
 

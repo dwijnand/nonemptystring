@@ -57,6 +57,8 @@ lazy val buildSetup: Seq[ProjectMod] = Seq(
   libraryDependencies += "org.scala-lang"   % "scala-reflect"  % scalaVersion.value,
   libraryDependencies += "org.scala-lang"   % "scala-compiler" % scalaVersion.value,
   libraryDependencies += "org.scalacheck" %%% "scalacheck"     % "1.13.1" % "test",
+  libraryDependencies += "com.chuusai"    %%% "shapeless"      % "2.3.0"  % "test",
+
   ProjectMod(
     _    settings (libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"),
     _ jvmSettings (libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test")
