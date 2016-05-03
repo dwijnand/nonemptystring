@@ -49,7 +49,7 @@ class NonEmptyStringMacros(val c: blackbox.Context) {
       else {
         c.Expr[NonEmptyString](q""" _root_.nonemptystring.NonEmptyString unsafeFromString $s """)
       }
-    case t => abort("Can only create an NonEmptyString with a constant string")
+    case _ => abort("Can only create an NonEmptyString with a constant string")
   }
 
   def nesImpl(args: c.Expr[Any]*): c.Expr[NonEmptyString] = c.prefix.tree match {

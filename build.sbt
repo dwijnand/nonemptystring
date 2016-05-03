@@ -52,10 +52,11 @@ lazy val buildSetup: Seq[ProjectMod] = Seq(
 
   initialCommands in console += "\nimport nonemptystring._",
 
-  libraryDependencies += "org.typelevel"   %% "macro-compat"  % "1.1.1",
-  libraryDependencies += "org.scalamacros"  % "paradise"      % "2.1.0" fullCrossCompilerPlugin(),
-  libraryDependencies += "org.scala-lang"   % "scala-reflect" % scalaVersion.value,
-  libraryDependencies += "org.scalacheck" %%% "scalacheck"    % "1.13.1" % "test",
+  libraryDependencies += "org.typelevel"   %% "macro-compat"   % "1.1.1",
+  libraryDependencies += "org.scalamacros"  % "paradise"       % "2.1.0" fullCrossCompilerPlugin(),
+  libraryDependencies += "org.scala-lang"   % "scala-reflect"  % scalaVersion.value,
+  libraryDependencies += "org.scala-lang"   % "scala-compiler" % scalaVersion.value,
+  libraryDependencies += "org.scalacheck" %%% "scalacheck"     % "1.13.1" % "test",
   ProjectMod(
     _    settings (libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"),
     _ jvmSettings (libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test")

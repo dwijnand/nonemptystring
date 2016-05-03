@@ -6,12 +6,14 @@ import scala.{ Boolean, StringContext }
 import scala.reflect.macros.{ TypecheckException, blackbox }
 
 object illTyped {
-  def apply(code: String)(error: String): Boolean = macro applyImpl
+  def apply(code: String)(error: String): Boolean = macro IllTypedMacros.applyImpl
+}
 
-  def applyImpl(c: blackbox.Context)(code: c.Expr[String])(error: c.Expr[String]): c.Expr[Boolean] = {
-    import c.universe._
-    def abort(msg: String) = c.abort(c.enclosingPosition, msg)
+@macrocompat.bundle
+class IllTypedMacros(val c: blackbox.Context) {
+  import c.universe._
 
+  def applyImpl(code: c.Expr[String])(error: c.Expr[String]): c.Expr[Boolean] = {
     val Literal(Constant(errorStr: String)) = error.tree
     val errorPattern = Pattern.compile(errorStr, Pattern.CASE_INSENSITIVE | Pattern.DOTALL)
     val errorMessage = "Expected error matching: " + errorStr
@@ -31,4 +33,6 @@ object illTyped {
 
     c.Expr[Boolean](Literal(Constant(true)))
   }
+
+  def abort(msg: String) = c.abort(c.enclosingPosition, msg)
 }
