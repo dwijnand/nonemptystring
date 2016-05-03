@@ -3,9 +3,7 @@ package str
 import java.lang.String
 import scala.{ AnyVal, Boolean, inline }
 
-final case class Str(unsafeGet: String) extends AnyVal {
-  @inline private final def value: String = unsafeGet
-
+final case class Str(value: String) extends AnyVal {
   @inline final def isEmpty: Boolean  = value.isEmpty
   @inline final def nonEmpty: Boolean = !value.isEmpty
 
