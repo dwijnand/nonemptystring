@@ -1,14 +1,14 @@
 import SbtMisc._
 import org.scalajs.sbtplugin.cross.CrossProject
 
-lazy val nonEmptyStringRoot = (project in file(".")
-  aggregate (nonEmptyString, nonEmptyStringJs)
+lazy val nonemptystringRoot = (project in file(".")
+  aggregate (nonemptystring, nonemptystringJs)
   configure (buildSetup map (_.simple): _*)
 )
 
-lazy val nonEmptyString      = nonEmptyStringCross.jvm
-lazy val nonEmptyStringJs    = nonEmptyStringCross.js
-lazy val nonEmptyStringCross = (CrossProject("nonEmptyString", "nonEmptyStringJs", file("."), CrossType.Pure)
+lazy val nonemptystring      = nonemptystringCross.jvm
+lazy val nonemptystringJs    = nonemptystringCross.js
+lazy val nonemptystringCross = (CrossProject("nonemptystring", "nonemptystringJs", file("."), CrossType.Pure)
   configure (buildSetup map (_.cross): _*)
 )
 
