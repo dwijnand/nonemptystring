@@ -1,4 +1,4 @@
-package str
+package nonemptystring
 
 import java.lang.String
 import scala.{ Any, AnyVal, IllegalArgumentException, None, Option, Some, inline, throws }

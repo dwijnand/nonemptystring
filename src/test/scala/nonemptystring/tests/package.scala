@@ -1,4 +1,4 @@
-package str
+package nonemptystring
 
 import scala.Console.{ println => _, _ }
 import scala.collection.immutable.WrappedString

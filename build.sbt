@@ -1,10 +1,16 @@
 import SbtMisc._
 import org.scalajs.sbtplugin.cross.CrossProject
 
-lazy val strRoot  = project in file(".") aggregate (str, strJs) configure (buildSetup map (_.simple): _*)
-lazy val str      = strCross.jvm
-lazy val strJs    = strCross.js
-lazy val strCross = CrossProject("str", "strJs", file("."), CrossType.Pure) configure (buildSetup map (_.cross): _*)
+lazy val nonEmptyStringRoot = (project in file(".")
+  aggregate (nonEmptyString, nonEmptyStringJs)
+  configure (buildSetup map (_.simple): _*)
+)
+
+lazy val nonEmptyString      = nonEmptyStringCross.jvm
+lazy val nonEmptyStringJs    = nonEmptyStringCross.js
+lazy val nonEmptyStringCross = (CrossProject("nonEmptyString", "nonEmptyStringJs", file("."), CrossType.Pure)
+  configure (buildSetup map (_.cross): _*)
+)
 
 lazy val buildSetup: Seq[ProjectMod] = Seq(
   organization := "com.dwijnand",
@@ -12,7 +18,7 @@ lazy val buildSetup: Seq[ProjectMod] = Seq(
       licenses := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0")),
      startYear := Some(2016),
    description := "a micro-library to deal with empty strings",
-       scmInfo := Some(ScmInfo(url("https://github.com/dwijnand/str"), "scm:git:git@github.com:dwijnand/str.git")),
+       scmInfo := Some(ScmInfo(url("https://github.com/dwijnand/nonemptystring"), "scm:git:git@github.com:dwijnand/nonemptystring.git")),
       homepage := scmInfo.value map (_.browseUrl),
 
         scalaVersion := "2.11.8",
@@ -44,7 +50,7 @@ lazy val buildSetup: Seq[ProjectMod] = Seq(
   scalacOptions in (Compile, console) --= "-Yno-predef -Yno-imports",
   scalacOptions in (Test,    console) --= "-Yno-predef -Yno-imports",
 
-  initialCommands in console += "\nimport str._",
+  initialCommands in console += "\nimport nonemptystring._",
 
   libraryDependencies += "org.scala-lang"   % "scala-reflect" % scalaVersion.value,
   libraryDependencies += "org.scalacheck" %%% "scalacheck"    % "1.13.1" % "test",

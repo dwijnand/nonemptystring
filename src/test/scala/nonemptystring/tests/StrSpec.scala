@@ -1,4 +1,4 @@
-package str
+package nonemptystring
 package tests
 
 class StrSpec extends ScalaCheckBundle {
