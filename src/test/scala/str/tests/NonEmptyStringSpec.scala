@@ -1,7 +1,7 @@
 package str
 package tests
 
-import scala.Some
+import scala.{ Some, StringContext }
 
 class NonEmptyStringSpec extends ScalaCheckBundle {
   def bundle = "NonEmptyString"
@@ -24,7 +24,13 @@ class NonEmptyStringSpec extends ScalaCheckBundle {
       Prop { val s = "abc"; use(s); NonEmptyString.fromString(s) == Some(NonEmptyString("abc")) },
       Prop(NonEmptyString.fromString("").isEmpty)
     ),
-    "unlift" -> Prop((NonEmptyString("abc"): String) == "abc")
+    "unlift" -> Prop((NonEmptyString("abc"): String) == "abc"),
+    "nes-interpolator" -> Seq(
+      Prop(nes"abc" == NonEmptyString("abc")),
+      Prop { val a = "abc"; use(a); nes"[abc = $a]" == NonEmptyString("abc") }
+//      Prop(nes"" == NonEmptyString("boom")),
+//      Prop { val a = ""; nes"$a" == NonEmptyString("boom") }
+    )
   )
 
   // To suppress "never used" warnings..
