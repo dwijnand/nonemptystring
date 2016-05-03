@@ -19,9 +19,12 @@ class NonEmptyStringSpec extends ScalaCheckBundle {
     ),
     "fromString" -> Seq(
       Prop(NonEmptyString fromString "abc" contains NonEmptyString("abc")),
-      Prop { val s = "abc"; NonEmptyString fromString s contains NonEmptyString("abc") },
+      Prop { val s = "abc"; use(s); NonEmptyString fromString s contains NonEmptyString("abc") },
       Prop(NonEmptyString.fromString("").isEmpty)
     ),
     "unlift" -> Prop((NonEmptyString("abc"): String) == "abc")
   )
+
+  // To suppress "never used" warnings..
+  def use[A](x: A): A = x
 }
