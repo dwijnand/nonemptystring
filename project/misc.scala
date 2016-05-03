@@ -69,4 +69,8 @@ object SbtMisc {
     case DslDisablePlugins(plugins) => ProjectMod(_ disablePlugins (plugins: _*), _ disablePlugins (plugins: _*))
     case DslConfigs(configs)        => ProjectMod(_ configs        (configs: _*), _ configs        (configs: _*))
   }
+
+  implicit final class ModuleIDWithCompilerPlugin(val _m: ModuleID) extends AnyVal {
+    def fullCrossCompilerPlugin(): ModuleID = sbt.compilerPlugin(_m cross CrossVersion.full)
+  }
 }
