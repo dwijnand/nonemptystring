@@ -1,7 +1,7 @@
 package nonemptystring
 
 import java.lang.String
-import scala.{ Any, AnyVal, IllegalArgumentException, None, Option, Some, inline, throws }
+import scala.{ Any, AnyVal, inline, IllegalArgumentException, None, Option, Some, StringContext, throws }
 import scala.collection.immutable.Seq
 import scala.reflect.macros.blackbox
 
@@ -38,42 +38,46 @@ object NonEmptyString {
   implicit def unlift(x: NonEmptyString): String = x.value
 }
 
-object NonEmptyStringMacros {
-  def applyImpl(c: blackbox.Context)(s: c.Expr[String]): c.Expr[NonEmptyString] = {
-    import c.universe._
-    def abort(msg: String) = c.abort(c.enclosingPosition, msg)
-    s.tree match {
-      case Literal(Constant(s: String)) =>
-        if (s.isEmpty)
+@macrocompat.bundle
+class NonEmptyStringMacros(val c: blackbox.Context) {
+  import c.universe._
+
+  def applyImpl(s: c.Expr[String]): c.Expr[NonEmptyString] = s.tree match {
+    case Literal(Constant(s: String)) =>
+      if (s.isEmpty)
+        abort("Cannot create a NonEmptyString with the empty string")
+      else {
+        c.Expr[NonEmptyString](q""" _root_.nonemptystring.NonEmptyString unsafeFromString $s """)
+      }
+    case t => abort("Can only create an NonEmptyString with a constant string")
+  }
+
+  def nesImpl(args: c.Expr[Any]*): c.Expr[NonEmptyString] = c.prefix.tree match {
+    case Apply(_, Seq(Apply(_, parts))) =>
+      if (parts.length != args.length + 1)
+        abort("wrong number of arguments (" + args.length + ") for interpolated string with " +
+          parts.length + " parts")
+
+      if (parts forall { case Literal(Constant("")) => true ; case _ => false })
+        if (parts.size == 1)
           abort("Cannot create a NonEmptyString with the empty string")
-        else {
-          val NonEmptyString = Select(Select(Ident(nme.ROOTPKG), newTermName("nonemptystring")), newTermName("NonEmptyString"))
-          val result = Apply(Select(NonEmptyString, newTermName("unsafeFromString")), scala.List(Literal(Constant(s))))
-          c.Expr[NonEmptyString](result)
+        else
+          abort("Cannot create a NonEmptyString with possibly an empty interpolated string")
+
+      c.Expr[NonEmptyString](q"""
+        val parts = _root_.scala.List[_root_.java.lang.String](..$parts)
+        val args = _root_.scala.List[_root_.scala.Any](..$args)
+        val pi = parts.iterator
+        val ai = args.iterator
+        val bldr = new _root_.java.lang.StringBuilder(_root_.scala.StringContext treatEscapes pi.next())
+        while (ai.hasNext) {
+          bldr append ai.next
+          bldr append (_root_.scala.StringContext treatEscapes pi.next)
         }
-      case t => abort("Can only create an NonEmptyString with a constant string")
-    }
+        val res = bldr.toString
+        _root_.nonemptystring.NonEmptyString unsafeFromString res
+      """)
   }
 
-  def nesImpl(c: blackbox.Context)(args: c.Expr[Any]*): c.Expr[NonEmptyString] = {
-    import c.universe._
-    def abort(msg: String) = c.abort(c.enclosingPosition, msg)
-
-    c.prefix.tree match {
-      case Apply(_, Seq(Apply(_, parts))) =>
-        if (parts.length != args.length + 1)
-          abort("wrong number of arguments (" + args.length + ") for interpolated string with " +
-            parts .length + " parts")
-
-        if (parts forall { case Literal(Constant("")) => true ; case _ => false })
-          if (parts.size == 1)
-            abort("Cannot create a NonEmptyString with the empty string")
-          else
-            abort("Cannot create a NonEmptyString with possibly an empty interpolated string")
-    }
-
-    val NonEmptyString = Select(Select(Ident(nme.ROOTPKG), newTermName("nonemptystring")), newTermName("NonEmptyString"))
-    val result = Apply(Select(NonEmptyString, newTermName("unsafeFromString")), scala.List(Literal(Constant("tit"))))
-    c.Expr[NonEmptyString](result)
-  }
+  def abort(msg: String) = c.abort(c.enclosingPosition, msg)
 }

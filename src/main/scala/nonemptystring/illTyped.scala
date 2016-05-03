@@ -18,9 +18,9 @@ object illTyped {
 
     val Literal(Constant(codeStr: String)) = code.tree
     try {
-      val dummy1 = newTermName(c.fresh)
-      val dummy2 = newTermName(c.fresh)
-      c.typeCheck(c.parse(s"object $dummy1 { val $dummy2 = { $codeStr } }"))
+      val dummy1 = TermName(c.freshName)
+      val dummy2 = TermName(c.freshName)
+      c.typecheck(c.parse(s"object $dummy1 { val $dummy2 = { $codeStr } }"))
       abort(s"Type-checking succeeded unexpectedly.\n$errorMessage")
     } catch {
       case e: TypecheckException =>
