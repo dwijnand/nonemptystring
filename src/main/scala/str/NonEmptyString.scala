@@ -2,7 +2,7 @@ package str
 
 import java.lang.String
 import scala.{ AnyVal, IllegalArgumentException, inline, None, Option, Some, throws }
-import scala.reflect.macros.Context
+import scala.reflect.macros.blackbox
 
 final class NonEmptyString private (val value: String) extends AnyVal {
   @inline override def toString = value
@@ -22,7 +22,7 @@ object NonEmptyString {
 }
 
 object NonEmptyStringMacros {
-  def applyImpl(c: Context)(s: c.Expr[String]): c.Expr[NonEmptyString] = {
+  def applyImpl(c: blackbox.Context)(s: c.Expr[String]): c.Expr[NonEmptyString] = {
     import c.universe._
     def abort(msg: String) = c.abort(c.enclosingPosition, msg)
     s.tree match {
