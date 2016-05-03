@@ -72,7 +72,7 @@ object NonEmptyStringMacros {
             abort("Cannot create a NonEmptyString with possibly an empty interpolated string")
     }
 
-    val NonEmptyString = Select(Select(Ident(nme.ROOTPKG), newTermName("nonemptystring)), newTermName("NonEmptyString"))
+    val NonEmptyString = Select(Select(Ident(nme.ROOTPKG), newTermName("nonemptystring")), newTermName("NonEmptyString"))
     val result = Apply(Select(NonEmptyString, newTermName("unsafeFromString")), scala.List(Literal(Constant("abc"))))
     c.Expr[NonEmptyString](result)
   }
