@@ -55,7 +55,10 @@ object NonEmptyStringMacros {
             parts .length + " parts")
 
         if (parts forall { case Literal(Constant("")) => true ; case _ => false })
-          abort("Cannot create a NonEmptyString with possibly an empty interpolated string")
+          if (parts.size == 1)
+            abort("Cannot create a NonEmptyString with the empty string")
+          else
+            abort("Cannot create a NonEmptyString with possibly an empty interpolated string")
     }
 
     val NonEmptyString = Select(Select(Ident(nme.ROOTPKG), newTermName("str")), newTermName("NonEmptyString"))

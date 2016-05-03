@@ -31,7 +31,7 @@ class NonEmptyStringSpec extends ScalaCheckBundle {
     "nes-interpolator" -> Seq(
       Prop(nes"abc" == NonEmptyString("abc")),
       Prop { val a = "abc"; use(a); nes"[abc = $a]" == NonEmptyString("abc") },
-      Prop(illTyped("""nes""""")("Cannot create a NonEmptyString with possibly an empty interpolated string")),
+      Prop(illTyped(""" nes"" """)("Cannot create a NonEmptyString with the empty string")),
       Prop(illTyped("""{ val a = ""; nes"$a" }""")
         ("Cannot create a NonEmptyString with possibly an empty interpolated string")
       )
