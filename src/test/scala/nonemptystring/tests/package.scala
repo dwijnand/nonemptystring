@@ -17,7 +17,7 @@ package object tests {
   type String       = java.lang.String
   type Unit         = scala.Unit
 
-  val Iterable = scala.collection.immutable.Seq
+  val Iterable = scala.collection.immutable.Iterable
   val Seq      = scala.collection.immutable.Seq
 
   private def stdout                  = scala.Console.out
