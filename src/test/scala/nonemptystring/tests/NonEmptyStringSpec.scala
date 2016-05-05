@@ -36,6 +36,9 @@ class NonEmptyStringSpec extends ScalaCheckBundle {
       Prop { illTyped("""{ val a = ""; nes"$a" }""",
         "Cannot create a NonEmptyString with possibly an empty interpolated string"
       ); true }
+    ),
+    "toString" -> Seq(
+      Prop(NonEmptyString("abc").toString == "abc")
     )
   )
 
