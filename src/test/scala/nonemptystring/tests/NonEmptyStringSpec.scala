@@ -9,11 +9,13 @@ class NonEmptyStringSpec extends ScalaCheckBundle {
   def bundle = "NonEmptyString"
   def props = Seq(
     "apply" -> Seq(
-      Prop(NonEmptyString("abc").value == "abc"),
-      Prop { illTyped("""NonEmptyString("")""", "Cannot create a NonEmptyString with the empty string"); true },
-      Prop { illTyped("""{ val s = "abc"; NonEmptyString(s).value == "abc" }""",
-        "Can only create an NonEmptyString with a constant string"
+      Prop(NonEmptyString("abc").get == "abc"),
+      Prop { illTyped("""NonEmptyString("")""", "Predicate isEmpty\\(\\) did not fail\\."); true },
+      Prop { illTyped("""{ val s = "abc"; NonEmptyString(s).get == "abc" }""",
+        "compile-time refinement only works with literals or constant predicates"
       ); true }
+      // "Cannot create a NonEmptyString with the empty string"
+      // "Can only create an NonEmptyString with a constant string"
     ),
     "unapply" -> Seq(
       Prop(NonEmptyString.unapply(NonEmptyString("abc")) == Some("abc")),

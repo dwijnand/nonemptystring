@@ -54,6 +54,7 @@ lazy val buildSetup: Seq[ProjectMod] = Seq(
 
   libraryDependencies += "org.typelevel"   %% "macro-compat"   % "1.1.1",
   libraryDependencies += "org.scalamacros"  % "paradise"       % "2.1.0" fullCrossCompilerPlugin(),
+  libraryDependencies += "eu.timepit"     %%% "refined"        % "0.4.0",
   libraryDependencies += "org.scala-lang"   % "scala-reflect"  % scalaVersion.value,
   libraryDependencies += "org.scala-lang"   % "scala-compiler" % scalaVersion.value,
   libraryDependencies += "org.scalacheck" %%% "scalacheck"     % "1.13.1" % "test",
