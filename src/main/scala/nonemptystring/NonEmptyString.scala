@@ -10,14 +10,18 @@ import eu.timepit.refined.api.RefType
 import eu.timepit.refined.collection._
 
 object NonEmptyString {
-  def apply(t: String)(implicit rt: RefType[Refined], v: Validate[String, NonEmpty]): NonEmptyString = macro RefineMacro.impl[Refined, String, NonEmpty]
+  def apply(t: String)(implicit rt: RefType[Refined], v: Validate[String, NonEmpty]): NonEmptyString =
+    macro RefineMacro.impl[Refined, String, NonEmpty]
+
   def unapply(x: NonEmptyString): Some[String] = Some(x.get)
 
   @throws[IllegalArgumentException]
   def unsafeFromString(s: String): NonEmptyString =
-    if (s.isEmpty) throw new IllegalArgumentException("empty string") else Refined[String, NonEmpty](s)
+    if (s.isEmpty) throw new IllegalArgumentException("empty string") else create(s)
 
-  def fromString(s: String): Option[NonEmptyString] = if (s.isEmpty) None else Some(Refined[String, NonEmpty](s))
+  def fromString(s: String): Option[NonEmptyString] = if (s.isEmpty) None else Some(create(s))
+
+  private def create(s: String): NonEmptyString = Refined[String, NonEmpty](s)
 }
 
 @macrocompat.bundle
